@@ -27,6 +27,7 @@ import {
   CheckCircle,
   XCircle,
   Clock,
+  MessageSquareCode,
 } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
@@ -35,6 +36,26 @@ import { useDispatch, useSelector } from "react-redux";
 import { BaseLoading } from "../components/BaseLoading";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
+
+const StatCard = ({ title, value, icon: Icon, color }) => {
+  return (
+    <div className="flex items-center justify-between rounded-2xl border bg-white px-5 py-4 min-w-[160px]">
+      <div className="space-y-1">
+        <p className="text-sm font-medium text-muted-foreground">{title}</p>
+        <p className={`text-2xl font-bold ${color}`}>{value}</p>
+      </div>
+
+      <div
+        className={cn(
+          "w-9 h-9 rounded-full flex items-center justify-center border",
+          color.replace("text", "border"),
+        )}
+      >
+        <Icon className={cn("h-5 w-5", color)} />
+      </div>
+    </div>
+  );
+};
 
 const Reports = () => {
   const [dateFrom, setDateFrom] = useState<Date>();
@@ -60,7 +81,7 @@ const Reports = () => {
           templateName: row.templateDetails?.name || "-",
           sendingDate: row.sendingDate,
           status: row.status || "pending",
-        }))
+        })),
       )
       ?.map((row: any, index: number) => ({
         ...row,
@@ -111,8 +132,9 @@ const Reports = () => {
   // Stats
   const stats = {
     total: summaryData?.totalMessages || 0,
-    complate: summaryData?.completed || 0,
-    // delivered: summaryData?.delivered || 0,
+    completed: summaryData?.completed || 0,
+    delivered: summaryData?.delivered || 0,
+    read: summaryData?.read || 0,
     failed: summaryData?.failed || 0,
     pending: summaryData?.pending || 0,
     scheduled: summaryData?.scheduled || 0,
@@ -187,7 +209,7 @@ const Reports = () => {
           <Badge
             className={cn(
               config.color,
-              "flex items-center gap-1 capitalize justify-center"
+              "flex items-center gap-1 capitalize justify-center",
             )}
           >
             <Icon className="w-3 h-3" />
@@ -299,137 +321,57 @@ const Reports = () => {
       </div>
 
       {/* Statistics Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2">
-        <Card className="card-elegant">
-          <CardContent className="p-4 py-6 flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-muted-foreground">
-                All Messages
-              </p>
-              <p className="text-2xl font-bold text-foreground">
-                {stats.total}
-              </p>
-            </div>
-            <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
-              <MessageSquare className="h-6 w-6 text-primary" />
-            </div>
-          </CardContent>
-        </Card>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-4">
+        <StatCard
+          title="All Messages"
+          value={stats.total}
+          icon={MessageSquare}
+          color="text-blue-600"
+        />
 
-        <Card className="card-elegant">
-          <CardContent className="p-4 py-6 flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-muted-foreground">
-                Delivered
-              </p>
-              <p className="text-2xl font-bold text-success">
-                {stats.complate}
-              </p>
-            </div>
-            <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
-              <CheckCircle className="h-6 w-6 text-success" />
-            </div>
-          </CardContent>
-        </Card>
-        {/* <Card className="card-elegant">
-          <CardContent className="p-4 py-6 flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-muted-foreground">Delivered</p>
-              <p className="text-2xl font-bold text-success">{stats.delivered}</p>
-            </div>
-            <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
-              <CheckCircle className="h-6 w-6 text-success" />
-            </div>
-          </CardContent>
-        </Card> */}
+        <StatCard
+          title="Completed"
+          value={stats.completed}
+          icon={CheckCircle}
+          color="text-green-600"
+        />
 
-        <Card className="card-elegant">
-          <CardContent className="p-4 py-6 flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-muted-foreground">
-                Failed
-              </p>
-              <p className="text-2xl font-bold text-destructive">
-                {stats.failed}
-              </p>
-            </div>
-            <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
-              <XCircle className="h-6 w-6 text-destructive" />
-            </div>
-          </CardContent>
-        </Card>
+        <StatCard
+          title="Read"
+          value={stats.read}
+          icon={MessageSquareCode}
+          color="text-yellow-500"
+        />
 
-        <Card className="card-elegant">
-          <CardContent className="p-4 py-6 flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-muted-foreground">
-                Pending
-              </p>
-              <p className="text-2xl font-bold text-warning">{stats.pending}</p>
-            </div>
-            <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
-              <Clock className="h-6 w-6 text-warning" />
-            </div>
-          </CardContent>
-        </Card>
+        <StatCard
+          title="Delivered"
+          value={stats.delivered}
+          icon={CheckCircle}
+          color="text-indigo-600"
+        />
 
-        <Card className="card-elegant">
-          <CardContent className="p-4 py-6 flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-muted-foreground">
-                Scheduled
-              </p>
-              <p className="text-2xl font-bold text-primary ">
-                {stats.scheduled}
-              </p>
-            </div>
-            <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
-              <Clock className="h-6 w-6 text-primary" />
-            </div>
-          </CardContent>
-        </Card>
+        <StatCard
+          title="Failed"
+          value={stats.failed}
+          icon={XCircle}
+          color="text-red-600"
+        />
+
+        <StatCard
+          title="Pending"
+          value={stats.pending}
+          icon={Clock}
+          color="text-orange-500"
+        />
+
+        <StatCard
+          title="Scheduled"
+          value={stats.scheduled}
+          icon={Clock}
+          color="text-purple-600"
+        />
       </div>
-      {/* <div className="py-0">
-        <Card className="card-elegant">
-          <CardHeader>
-            <CardTitle>Performance Metrics</CardTitle>
-            <CardDescription>
-              Message delivery and engagement statistics
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div>
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm font-medium">Delivery Rate</span>
-                  <span className="text-sm font-bold text-success">100%</span>
-                </div>
-                <div className="w-full bg-muted rounded-full h-2">
-                  <div className="bg-success h-2 rounded-full" />
-                </div>
-              </div>
-              <div>
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm font-medium">Read Rate</span>
-                  <span className="text-sm font-bold text-primary">20%</span>
-                </div>
-                <div className="w-full bg-muted rounded-full h-2">
-                  <div className="bg-primary h-2 rounded-full" />
-                </div>
-              </div>
-              <div>
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm font-medium">Success Rate</span>
-                  <span className="text-sm font-bold text-primary">50%</span>
-                </div>
-                <div className="w-full bg-muted rounded-full h-2">
-                  <div className="bg-primary h-2 rounded-full" />
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div> */}
+
       {/* Filters */}
       <Card className="card-elegant">
         <CardHeader>
@@ -459,7 +401,7 @@ const Reports = () => {
                     variant="outline"
                     className={cn(
                       "w-full justify-start text-left font-normal",
-                      !dateFrom && "text-muted-foreground"
+                      !dateFrom && "text-muted-foreground",
                     )}
                   >
                     <CalendarIcon className="mr-2 h-4 w-4" />
@@ -487,7 +429,7 @@ const Reports = () => {
                     variant="outline"
                     className={cn(
                       "w-full justify-start text-left font-normal",
-                      !dateTo && "text-muted-foreground"
+                      !dateTo && "text-muted-foreground",
                     )}
                   >
                     <CalendarIcon className="mr-2 h-4 w-4" />

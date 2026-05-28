@@ -7,13 +7,13 @@ export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
     port: 8080,
-    proxy: {
-      "/api": {
-        target: "https://gbs-whatsapp.fableadtech.in/services",
-        changeOrigin: true,
-        secure: false,
-      },
-    },
+    // proxy: {
+    //   "/api": {
+    //     target: "https://gbs-whatsapp.fableadtech.in/services",
+    //     changeOrigin: true,
+    //     secure: false,
+    //   },
+    // },
   },
   plugins: [react(), mode === "development" && componentTagger()].filter(
     Boolean,
