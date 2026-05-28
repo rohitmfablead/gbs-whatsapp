@@ -278,14 +278,14 @@ if (specificTemplateNames.includes(selectedTemplate.name)) {
 - Path aliases (`@/` points to `src/`)
 - React SWC plugin for fast refresh
 - Component tagger for development
-- **API Proxy**: All `/api` requests are automatically proxied to `https://whatsapp-bulk.fableadtech.com/services`
+- **API Proxy**: All `/api` requests are automatically proxied to `https://gbs-whatsapp.fableadtech.in/services`
 
 #### Proxy Configuration
 The development server includes a proxy configuration to handle API requests:
 ```typescript
 proxy: {
   "/api": {
-    target: "https://whatsapp-bulk.fableadtech.com/services",
+    target: "https://gbs-whatsapp.fableadtech.in/services",
     changeOrigin: true,
     secure: false,
   },

@@ -106,7 +106,7 @@ export const Chat = () => {
 
   const token = localStorage.getItem("token");
   const dispatch = useDispatch();
-  const API_BASE_URL = "https://whatsapp-bulk.fableadtech.com/services/api";
+  const API_BASE_URL = "https://gbs-whatsapp.fableadtech.in/services/api";
   const POLL_INTERVAL_MS = 1000; // ~1s polling for near real-time updates
 
   // Safely derive messaging window flags from API shapes (root or nested .conversation)
@@ -547,30 +547,30 @@ export const Chat = () => {
             // For media files, send the binary file directly instead of URL
             ...(isImage || isVideo || isAudio || isDocument
               ? {
-                  file: selectedImage, // Send the actual file object in binary format
-                  media_type:
-                    selectedImage.type ||
-                    (isImage
-                      ? "image/jpeg"
-                      : isVideo
-                        ? "video/mp4"
-                        : isAudio
-                          ? "audio/mpeg"
-                          : "application/octet-stream"),
-                  media_filename:
-                    selectedImage.name ||
-                    (isImage
-                      ? "image.jpg"
-                      : isVideo
-                        ? "video.mp4"
-                        : isAudio
-                          ? "audio.mp3"
-                          : "document.pdf"),
-                }
+                file: selectedImage, // Send the actual file object in binary format
+                media_type:
+                  selectedImage.type ||
+                  (isImage
+                    ? "image/jpeg"
+                    : isVideo
+                      ? "video/mp4"
+                      : isAudio
+                        ? "audio/mpeg"
+                        : "application/octet-stream"),
+                media_filename:
+                  selectedImage.name ||
+                  (isImage
+                    ? "image.jpg"
+                    : isVideo
+                      ? "video.mp4"
+                      : isAudio
+                        ? "audio.mp3"
+                        : "document.pdf"),
+              }
               : {
-                  // For text messages, just send the message
-                  message: newMessage,
-                }),
+                // For text messages, just send the message
+                message: newMessage,
+              }),
           }),
           tempId,
         }),
@@ -745,13 +745,13 @@ export const Chat = () => {
 
   const filteredContacts = Array.isArray(conversations)
     ? conversations.filter(
-        (c) =>
-          c.contact_details?.name
-            ?.toLowerCase()
-            .includes(searchQuery.toLowerCase()) ||
-          c.phone_number?.includes(searchQuery) ||
-          c.contact_name?.toLowerCase().includes(searchQuery.toLowerCase()),
-      )
+      (c) =>
+        c.contact_details?.name
+          ?.toLowerCase()
+          .includes(searchQuery.toLowerCase()) ||
+        c.phone_number?.includes(searchQuery) ||
+        c.contact_name?.toLowerCase().includes(searchQuery.toLowerCase()),
+    )
     : [];
 
   // Reset new messages count when switching conversations
@@ -878,11 +878,10 @@ export const Chat = () => {
                               setIsContactListOpen(false);
                             }
                           }}
-                          className={`p-4 rounded-xl cursor-pointer transition-all duration-200 hover:bg-accent/50 mb-2 mx-2 ${
-                            selectedContact?.id === contact?.id
+                          className={`p-4 rounded-xl cursor-pointer transition-all duration-200 hover:bg-accent/50 mb-2 mx-2 ${selectedContact?.id === contact?.id
                               ? "bg-gradient-to-r from-primary/20 to-primary/10 border-2 border-primary/30 shadow-md"
                               : "border border-border/20 bg-white dark:bg-gray-800 hover:shadow-sm"
-                          }`}
+                            }`}
                         >
                           <div className="flex items-center space-x-2 lg:space-x-3">
                             <Avatar className="w-10 h-10 lg:w-10 lg:h-10 ring-2 ring-border/20">
@@ -909,24 +908,24 @@ export const Chat = () => {
                                   <span className="text-xs text-muted-foreground font-medium">
                                     {contact.last_message_at
                                       ? new Date(
-                                          contact.last_message_at,
-                                        ).toLocaleTimeString([], {
-                                          hour: "2-digit",
-                                          minute: "2-digit",
-                                        })
+                                        contact.last_message_at,
+                                      ).toLocaleTimeString([], {
+                                        hour: "2-digit",
+                                        minute: "2-digit",
+                                      })
                                       : new Date().toLocaleTimeString([], {
-                                          hour: "2-digit",
-                                          minute: "2-digit",
-                                        })}
+                                        hour: "2-digit",
+                                        minute: "2-digit",
+                                      })}
                                   </span>
                                 </div>
                               </div>
                               <p className="text-xs lg:text-sm text-muted-foreground truncate">
                                 {contact.latest_message &&
-                                contact.latest_message.length > 0
+                                  contact.latest_message.length > 0
                                   ? contact.latest_message[0].content
                                   : contact.last_message_preview ||
-                                    "No messages yet."}
+                                  "No messages yet."}
                               </p>
                             </div>
                           </div>
@@ -1017,15 +1016,15 @@ export const Chat = () => {
                           {(selectedConversationDetails?.contact_details
                             ?.email ||
                             selectedContact?.contact_details?.email) && (
-                            <div className="flex items-center gap-2 mt-1">
-                              <Mail className="w-4 h-4 shrink-0" />
-                              <span>
-                                {selectedConversationDetails?.contact_details
-                                  ?.email ||
-                                  selectedContact?.contact_details?.email}
-                              </span>
-                            </div>
-                          )}
+                              <div className="flex items-center gap-2 mt-1">
+                                <Mail className="w-4 h-4 shrink-0" />
+                                <span>
+                                  {selectedConversationDetails?.contact_details
+                                    ?.email ||
+                                    selectedContact?.contact_details?.email}
+                                </span>
+                              </div>
+                            )}
                         </div>
                       </div>
                     </div>
@@ -1100,11 +1099,10 @@ export const Chat = () => {
                   style={{ flex: 1, minHeight: 0 }}
                 >
                   <div
-                    className={`space-y-2 lg:space-y-4 transition-opacity duration-200 ${
-                      SCROLL_FEATURES_ENABLED && isScrolling
+                    className={`space-y-2 lg:space-y-4 transition-opacity duration-200 ${SCROLL_FEATURES_ENABLED && isScrolling
                         ? "opacity-30"
                         : "opacity-100"
-                    }`}
+                      }`}
                     style={{
                       width: "100%",
                       display: "flex",
@@ -1126,10 +1124,10 @@ export const Chat = () => {
                         formatDate(
                           message.whatsapp_timestamp || message.created_at,
                         ) !==
-                          formatDate(
-                            messages[index - 1]?.whatsapp_timestamp ||
-                              messages[index - 1]?.created_at,
-                          );
+                        formatDate(
+                          messages[index - 1]?.whatsapp_timestamp ||
+                          messages[index - 1]?.created_at,
+                        );
 
                       const resolvedType = resolveMessageType(message);
                       const fileBadgeLabel = getFileBadgeLabel(message);
@@ -1143,24 +1141,22 @@ export const Chat = () => {
                               <Badge variant="secondary" className="text-xs">
                                 {formatDate(
                                   message.whatsapp_timestamp ||
-                                    message.created_at,
+                                  message.created_at,
                                 )}
                               </Badge>
                             </div>
                           )}
                           <div
-                            className={`flex ${
-                              message.direction === "outbound"
+                            className={`flex ${message.direction === "outbound"
                                 ? "justify-end"
                                 : "justify-start"
-                            }`}
+                              }`}
                           >
                             <div
-                              className={`max-w-[75%] lg:max-w-md px-4 lg:px-5 py-3 lg:py-4 rounded-2xl shadow-sm transition-all duration-200 hover:shadow-md ${
-                                message.direction === "outbound"
+                              className={`max-w-[75%] lg:max-w-md px-4 lg:px-5 py-3 lg:py-4 rounded-2xl shadow-sm transition-all duration-200 hover:shadow-md ${message.direction === "outbound"
                                   ? "bg-gradient-to-r from-primary to-primary/90 text-white rounded-br-lg ml-auto"
                                   : "bg-white dark:bg-gray-800 border border-border/30 text-foreground rounded-bl-lg shadow-sm"
-                              }`}
+                                }`}
                             >
                               {message.media_url && (
                                 <div className="mb-2">
@@ -1392,16 +1388,15 @@ export const Chat = () => {
                                 </p>
                               )}
                               <div
-                                className={`flex items-center justify-end mt-1 lg:mt-2 space-x-1 ${
-                                  message.direction === "outbound"
+                                className={`flex items-center justify-end mt-1 lg:mt-2 space-x-1 ${message.direction === "outbound"
                                     ? "text-white/70"
                                     : "text-muted-foreground"
-                                }`}
+                                  }`}
                               >
                                 <span className="text-xs font-medium">
                                   {formatTime(
                                     message.whatsapp_timestamp ||
-                                      message.created_at,
+                                    message.created_at,
                                   )}
                                 </span>
                                 {message.direction === "outbound" &&
@@ -1458,7 +1453,7 @@ export const Chat = () => {
                   {selectedImage && (
                     <div className="relative w-fit mb-2">
                       {selectedImage.type &&
-                      selectedImage.type.startsWith("image/") ? (
+                        selectedImage.type.startsWith("image/") ? (
                         <img
                           src={
                             typeof selectedImage === "string"
