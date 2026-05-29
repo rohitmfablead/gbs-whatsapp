@@ -105,7 +105,7 @@ export const Sidebar = ({ mobileOpen, setMobileOpen }) => {
           <div className="text-sidebar-foreground/60 text-xs text-start">
             © {new Date().getFullYear()}{" "}
             <a
-              href="https://fableadtechnolabs.com"
+              href="https://www.fableadtech.com/"
               target="_blank"
               className="hover:underline"
               rel="noopener noreferrer"

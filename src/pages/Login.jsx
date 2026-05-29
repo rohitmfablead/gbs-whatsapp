@@ -100,9 +100,8 @@ export const Login = () => {
                     placeholder="Enter your email"
                     value={email}
                     onChange={handleInputChange(setEmail, "email")}
-                    className={`pl-10 h-11 ${
-                      errors.email ? "border-red-500" : ""
-                    }`}
+                    className={`pl-10 h-11 ${errors.email ? "border-red-500" : ""
+                      }`}
                   />
                 </div>
                 {errors.email && (
@@ -123,9 +122,8 @@ export const Login = () => {
                     placeholder="Enter your password"
                     value={password}
                     onChange={handleInputChange(setPassword, "password")}
-                    className={`pl-10 h-11 ${
-                      errors.password ? "border-red-500" : ""
-                    }`}
+                    className={`pl-10 h-11 ${errors.password ? "border-red-500" : ""
+                      }`}
                   />
                 </div>
                 {errors.password && (
@@ -155,7 +153,7 @@ export const Login = () => {
           <div className="text-sm text-center text-black">
             © {new Date().getFullYear()}{" "}
             <Link
-              to="https://fableadtechnolabs.com"
+              to="https://www.fableadtech.com/"
               target="_blank"
               rel="noopener noreferrer"
               className="text-blue-600 hover:underline"
